@@ -1,0 +1,121 @@
+body {
+  margin: 5px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+}
+
+main {
+  display: flex;
+}
+
+form {
+  width: 50%;
+}
+
+aside {
+  width: 50%;
+}
+
+.message {
+  height: 50px;
+  margin: 0;
+}
+
+#wordSpace .letter-row {
+  display: flex;
+  justify-content: center;
+}
+#wordSpace .letter-row input {
+  caret-color: transparent;
+  cursor: pointer;
+  font-size: 50px;
+  border-radius: 10px;
+  height: 50px;
+  margin: 5px;
+  text-align: center;
+  text-transform: capitalize;
+  width: 50px;
+}
+#wordSpace .letter-row input::-moz-selection {
+  background: rgb(199, 219, 225);
+}
+#wordSpace .letter-row input:focus, #wordSpace .letter-row input::selection {
+  background: rgb(199, 219, 225);
+}
+#wordSpace .letter-row input.invalid {
+  background: rgb(212, 109, 109);
+  animation: shake 0.5s;
+}
+#wordSpace .letter-row input.invalid::-moz-selection {
+  background: rgb(212, 109, 109);
+}
+#wordSpace .letter-row input.invalid::selection {
+  background: rgb(212, 109, 109);
+}
+
+#guessed-words section {
+  display: flex;
+  font-size: 35px;
+  justify-content: center;
+  text-transform: capitalize;
+}
+#guessed-words div {
+  background-color: rgb(241, 241, 241);
+  border: 2px solid black;
+  border-radius: 10px;
+  height: 50px;
+  margin: 5px;
+  width: 50px;
+}
+#guessed-words div.present {
+  background-color: rgb(241, 241, 187);
+}
+#guessed-words div.match {
+  background-color: rgb(159, 244, 159);
+}
+
+input[type=button] {
+  cursor: pointer;
+  display: none;
+}
+input[type=button].show {
+  display: inline-block;
+}
+
+@keyframes shake {
+  0% {
+    transform: translate(1px, 1px) rotate(0deg);
+  }
+  10% {
+    transform: translate(-1px, -2px) rotate(-1deg);
+  }
+  20% {
+    transform: translate(-3px, 0px) rotate(1deg);
+  }
+  30% {
+    transform: translate(3px, 2px) rotate(0deg);
+  }
+  40% {
+    transform: translate(1px, -1px) rotate(1deg);
+  }
+  50% {
+    transform: translate(-1px, 2px) rotate(-1deg);
+  }
+  60% {
+    transform: translate(-3px, 1px) rotate(0deg);
+  }
+  70% {
+    transform: translate(3px, 1px) rotate(-1deg);
+  }
+  80% {
+    transform: translate(-1px, -1px) rotate(1deg);
+  }
+  90% {
+    transform: translate(1px, 2px) rotate(0deg);
+  }
+  100% {
+    transform: translate(1px, -2px) rotate(-1deg);
+  }
+}/*# sourceMappingURL=style.css.map */
