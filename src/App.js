@@ -43,6 +43,7 @@ function App() {
     createWord([]);
     resetLetters();
     inputRef.current.focus();
+    // 'current' is an object returned by useRef()
     setAttempts((prevCount) => prevCount - 1);
     if (attempts === 1 || myWord.toString() === secretWord.toString()) {
       endGame();
@@ -76,7 +77,7 @@ function App() {
     updateMessage('');
   }
 
-  const validWord = myWord.every(item => typeof item === 'string' && item.length === 1 && item.match(/[a-z]/i)) && myWord.length === 5;
+  const validWord = myWord.filter(item => typeof item === 'string' && /[a-z]/i.test(item)).length === 5;
 
   const inputRef = useRef();
   //useEffect allows for side effects in components
@@ -86,8 +87,7 @@ function App() {
 
   useEffect(() => {
     if (validWord) {
-      const submitButton = document.querySelector('#submit');
-      submitButton.focus();
+      document.querySelector('#submit').focus();
     }
   }, [validWord]);
 
