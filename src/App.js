@@ -117,7 +117,7 @@ function App() {
           <div id="guessed-words"></div>
         </aside>
       </main>
-      <input id="reset" type="button" value="Reset" className={gameOver == true ? 'show' : ''} onClick={resetGame} />
+      <input id="reset" type="button" value="Reset" className={gameOver === true ? 'show' : ''} onClick={resetGame} />
     </>
   );
 }
