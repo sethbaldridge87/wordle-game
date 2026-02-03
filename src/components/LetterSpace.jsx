@@ -6,7 +6,9 @@ const LetterSpace = forwardRef(({ sendDataToParent, position, disabled, letterSt
     // useRef allows a value that can be updated without re-rendering
     const timeoutRef = useRef(null);
 
-    const handleClick = (e) => {
+    const handleMouseUp = (e) => {
+        // prevent mouseup from moving the caret and deselecting
+        e.preventDefault();
         e.target.select();
     }
 
@@ -17,33 +19,53 @@ const LetterSpace = forwardRef(({ sendDataToParent, position, disabled, letterSt
         }
     });
 
-    const handleKeyChange = (e) => {
+    const handleInputChange = (e) => {
         setInvalid(false);
         let letter = e.target.value;
         e.target.select();
+        letter = letter.toLowerCase();
         if (letter.match(/[a-z]/i)) {
-            letter = letter.toLowerCase();
             updateCharacter(letter);
             sendDataToParent(letter);
             const nextLetter = e.target.nextElementSibling;
             if (nextLetter && typeof nextLetter.focus === 'function') {
                 nextLetter.focus();
+            } else {
+                e.target.blur();
             }
         } else {
             e.target.value = character;
             setInvalid(true);
             // show invalid state briefly
-            timeoutRef.current = setTimeout(() => {
-                // 'current' is an object returned by useRef()
+            if (letter !== '') {
+                timeoutRef.current = setTimeout(() => {
+                    // 'current' is an object returned by useRef()
+                    setInvalid(false);
+                    timeoutRef.current = null;
+                }, 500);
+                e.target.select();
+                sendDataToParent(character);
+            } else {
                 setInvalid(false);
-                timeoutRef.current = null;
-            }, 500);
-            e.target.select();
-            sendDataToParent(character);
+            }
         }
     }
+
+    const handleKeyChange = (e) => {
+        if (e.code === "Backspace") {
+            let letter = e.target.value;
+            updateCharacter(letter);
+            sendDataToParent(letter);
+            // need to update the state so that the submit button remains hidden when a blank space is present
+            const prevLetter = e.target.previousElementSibling;
+            if (prevLetter && typeof prevLetter.focus === 'function') {
+                prevLetter.focus();
+            }
+        }
+    }
+
     return (
-        <input onClick={handleClick} ref={ref} name={position} type="text" maxLength="1" onChange={handleKeyChange} disabled={disabled} className={invalid ? 'invalid' : ''} />
+        <input ref={ref} name={position} type="text" maxLength="1" onInput={handleInputChange} onKeyUp={handleKeyChange} onMouseUp={handleMouseUp} disabled={disabled} className={invalid ? 'invalid' : ''} />
     )
 });
 
