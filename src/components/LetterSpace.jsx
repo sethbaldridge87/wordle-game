@@ -17,7 +17,7 @@ const LetterSpace = forwardRef(({ sendDataToParent, position, disabled, letterSt
             updateCharacter('');
             // ensures that the state from the previously guessed word does not linger
         }
-    });
+    }, [character]);
 
     const handleInputChange = (e) => {
         setInvalid(false);
@@ -65,7 +65,7 @@ const LetterSpace = forwardRef(({ sendDataToParent, position, disabled, letterSt
     }
 
     return (
-        <input ref={ref} name={position} type="text" maxLength="1" onInput={handleInputChange} onKeyUp={handleKeyChange} onMouseUp={handleMouseUp} disabled={disabled} className={invalid ? 'invalid' : ''} />
+        <input ref={ref} name={position} type="text" maxLength="1" onInput={handleInputChange} onKeyUp={handleKeyChange} onMouseUp={handleMouseUp} disabled={disabled} className={`word-block ${invalid ? 'invalid' : ''}`} />
     )
 });
 

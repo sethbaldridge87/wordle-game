@@ -30,6 +30,7 @@ function App() {
     myWord.forEach((letter, i) => {
       //need to compare secretWord to myWord
       const letterDiv = document.createElement('div');
+      letterDiv.classList.add('word-block');
       if (secretWord.includes(letter)) {
         letterDiv.classList.add('present');
         if (myWord[i] === secretWord[i]) {
@@ -102,7 +103,7 @@ function App() {
       <h2 className="message">{message}</h2>
       <main>
         <form id="wordSpace">
-          <h2>Remaining Attemps: {attempts}</h2>
+          <h2>Remaining Attempts: {attempts}</h2>
           <div className="letter-row">
             <LetterSpace letterState={letterState} position={1} sendDataToParent={handleDataFromLetterSpace(0)} disabled={gameOver} ref={inputRef} />
             <LetterSpace letterState={letterState} position={2} sendDataToParent={handleDataFromLetterSpace(1)} disabled={gameOver} />
