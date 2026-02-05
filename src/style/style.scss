@@ -92,6 +92,11 @@ form, aside {
     transform: translateY(-50%);
     top: 50%;
     bottom: 50%;
+
+    input {
+      opacity: 1;
+      pointer-events: auto;
+    }
   }
 }
 
@@ -168,20 +173,23 @@ form, aside {
 
 input[type=button] {
   cursor: pointer;
-  display: none;
+  display: inline-block;
+  background-color: $gold;
+  border-radius: 12px;
+  font-family: "Chewy", system-ui;
+  font-size: 20px;
+  letter-spacing: .5px;
+  margin-top: 10px;
+  opacity: 0;
+  padding: 10px 20px;
+  pointer-events: none;
+  transition: .3s;
+  -webkit-text-stroke: none;
+  -webkit-text-stroke-width: 0;
 
   &.show {
-    background-color: $gold;
-    border-radius: 12px;
-    display: inline-block;
-    font-family: "Chewy", system-ui;
-    font-size: 20px;
-    letter-spacing: .5px;
-    margin-top: 10px;
-    padding: 10px 20px;
-    transition: .3s;
-    -webkit-text-stroke: none;
-    -webkit-text-stroke-width: 0;
+    opacity: 1;
+    pointer-events: auto;
 
     &:hover, &:focus, &::selection {
       box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.75);
@@ -204,6 +212,7 @@ input[type=button] {
 
   form, aside {
     flex: 0 0 50%;
+    height: fit-content;
     width: 50%;
     margin: 15px;
   }

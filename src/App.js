@@ -1,5 +1,4 @@
 import './style/style.css';
-import Header from './components/Header';
 import LetterSpace from './components/LetterSpace';
 import { useState } from 'react';
 import { useRef } from 'react';
@@ -102,11 +101,13 @@ function App() {
   
   return (
     <>
-      <Header />
+      <header>
+        <h1>Welcome to My Wordle Game!</h1>
+      </header>
       <br />
       <div className="modal">
         <h2 className="message">{message}</h2>
-        <input className='show' id="reset" type="button" value="Reset" onClick={resetGame} />
+        <input id="reset" type="button" value="Reset" onClick={resetGame} />
       </div>
       <main>
         <form id="wordSpace">

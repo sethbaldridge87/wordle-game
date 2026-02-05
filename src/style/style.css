@@ -87,6 +87,10 @@ form, aside {
   top: 50%;
   bottom: 50%;
 }
+.modal-reveal .modal input {
+  opacity: 1;
+  pointer-events: auto;
+}
 
 .word-block {
   background-color: rgb(241, 241, 241);
@@ -154,20 +158,23 @@ form, aside {
 
 input[type=button] {
   cursor: pointer;
-  display: none;
-}
-input[type=button].show {
+  display: inline-block;
   background-color: #fde61b;
   border-radius: 12px;
-  display: inline-block;
   font-family: "Chewy", system-ui;
   font-size: 20px;
   letter-spacing: 0.5px;
   margin-top: 10px;
+  opacity: 0;
   padding: 10px 20px;
+  pointer-events: none;
   transition: 0.3s;
   -webkit-text-stroke: none;
   -webkit-text-stroke-width: 0;
+}
+input[type=button].show {
+  opacity: 1;
+  pointer-events: auto;
 }
 input[type=button].show::-moz-selection {
   box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.75);
@@ -189,6 +196,8 @@ input[type=button].show:hover, input[type=button].show:focus, input[type=button]
   }
   form, aside {
     flex: 0 0 50%;
+    height: -moz-fit-content;
+    height: fit-content;
     width: 50%;
     margin: 15px;
   }
