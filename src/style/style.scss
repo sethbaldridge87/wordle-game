@@ -1,25 +1,98 @@
+$gold: #fde61b;
+$dark-blue: #0838e7;
+$light-blue: #6b75d8;
+
+html, body {
+  background: linear-gradient($dark-blue, $light-blue);
+  background-repeat: no-repeat;
+}
+
+html {
+  background-attachment: fixed;
+}
+
 body {
-  background: linear-gradient(#0838e7, #6b75d8);
-  color: #fde61b;
+  background-attachment: fixed;
+  color: $gold;
   font-family: "Galindo", sans-serif;
   font-size: 25px;
-  height: 100vh;
   letter-spacing: 2px;
   width: 100vw;
   margin: 0;
-  padding: 15px;
-  overflow: hidden;
+  padding: 0;
+  overflow-x: hidden;
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   -webkit-text-stroke: #efac39;
-  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-width: .5px;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
 }
 
-.message {
-  height: 50px;
+header {
+  padding: 15px;
+}
+
+main {
+  justify-items: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+h2 {
   margin: 0;
+  padding: 0;
+}
+
+form, aside {
+  background-color: rgb(165, 73, 42);
+  border-radius: 15px;
+  border-style: inset;
+  box-shadow: inset 0 0 20px rgb(232, 194, 144), inset 0 0 20px rgb(232, 194, 144), inset 0 0 20px rgb(232, 194, 144), inset 0 0 20px rgb(232, 194, 144);
+  margin: 30px auto;
+  padding: 30px 15px;
+  width: 85%;
+}
+
+.modal-overlay {
+  display: none;
+}
+
+.modal {
+  display: none;
+}
+
+.modal-reveal {
+  .modal-overlay {
+    display: block;
+    position: fixed;
+    right: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000;
+    opacity: 0.5;
+  }
+  
+  .modal {
+    background-color: $dark-blue;
+    border: 5px solid $gold;
+    border-radius: 15px;
+    display: block;
+    padding: 30px;
+    position: fixed;
+    left: 15px;
+    right: 15px;
+    animation: zoom-in 0.5s forwards;
+    min-height: 130px;
+    margin: auto;
+    max-width: 400px;
+    transform: translateY(-50%);
+    top: 50%;
+    bottom: 50%;
+  }
 }
 
 .word-block {
@@ -42,6 +115,7 @@ body {
     .letter-row {
         display: flex;
         justify-content: center;
+        margin-top: 15px;
 
         input {
             caret-color: transparent;
@@ -61,6 +135,10 @@ body {
             }
         }
     }
+
+    #submit {
+      margin-top: 20px;
+    }
 }
 
 #guessed-words {
@@ -69,9 +147,15 @@ body {
     font-size: 35px;
     justify-content: center;
     text-transform: capitalize;
+
+    &:first-of-type {
+      margin-top: 15px;
+    }
   }
 
   div {
+    width: 55px;
+
     &.present {
       background-color: rgb(255, 255, 143);
     }
@@ -87,13 +171,13 @@ input[type=button] {
   display: none;
 
   &.show {
-    background-color: #fde61b;
+    background-color: $gold;
     border-radius: 12px;
     display: inline-block;
     font-family: "Chewy", system-ui;
     font-size: 20px;
     letter-spacing: .5px;
-    margin-top: 20px;
+    margin-top: 10px;
     padding: 10px 20px;
     transition: .3s;
     -webkit-text-stroke: none;
@@ -105,14 +189,29 @@ input[type=button] {
   }
 }
 
+@media screen and (min-width: 767px) {
+  form, aside {
+    max-width: 650px;
+  }
+}
+
 @media screen and (min-width: 992px) {
   main {
     display: flex;
+    justify-content: center;
+    max-width: 800px;
   }
 
   form, aside {
     flex: 0 0 50%;
     width: 50%;
+    margin: 15px;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  main {
+    max-width: 1050px;
   }
 }
 
@@ -128,4 +227,13 @@ input[type=button] {
   80% { transform: translate(-1px, -1px) rotate(1deg); }
   90% { transform: translate(1px, 2px) rotate(0deg); }
   100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+
+@keyframes zoom-in {
+  0% {
+    transform: scale(.25, .25);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
 }
