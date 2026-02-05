@@ -14,6 +14,7 @@ function App() {
   const guessedWordsContainer = document.querySelector('#guessed-words');
   const letterInputs = document.querySelectorAll('.letter-row input');
   const secretWord = 'apple'.split('');
+  const mainBody = document.querySelector('body');
 
   const endGame = () => {
     if (myWord.toString() === secretWord.toString()) {
@@ -21,8 +22,10 @@ function App() {
     } else {
       updateMessage("You Lose!");
     }
+    mainBody.classList.add('modal-reveal');
     letterInputs.disabled = true;
     updateGame(true);
+    document.querySelector('#reset').focus();
   }
 
   const submitWord = () => {
@@ -76,6 +79,7 @@ function App() {
     guessedWordsContainer.innerHTML = '';
     updateGame(false);
     updateMessage('');
+    mainBody.classList.remove('modal-reveal');
   }
 
   const validWord = myWord.filter(item => typeof item === 'string' && /[a-z]/i.test(item)).length === 5;
@@ -100,7 +104,10 @@ function App() {
     <>
       <Header />
       <br />
-      <h2 className="message">{message}</h2>
+      <div className="modal">
+        <h2 className="message">{message}</h2>
+        <input className='show' id="reset" type="button" value="Reset" onClick={resetGame} />
+      </div>
       <main>
         <form id="wordSpace">
           <h2>Remaining Attempts: {attempts}</h2>
@@ -118,7 +125,6 @@ function App() {
           <div id="guessed-words"></div>
         </aside>
       </main>
-      <input id="reset" type="button" value="Reset" className={gameOver === true ? 'show' : ''} onClick={resetGame} />
     </>
   );
 }
