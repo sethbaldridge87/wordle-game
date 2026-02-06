@@ -45,7 +45,7 @@ function App() {
     guessedWordsContainer.appendChild(section);
     createWord([]);
     resetLetters();
-    inputRef.current.focus();
+    focusRef.current.focus();
     // 'current' is an object returned by useRef()
     setAttempts((prevCount) => prevCount - 1);
     if (attempts === 1 || myWord.toString() === secretWord.toString()) {
@@ -83,10 +83,10 @@ function App() {
 
   const validWord = myWord.filter(item => typeof item === 'string' && /[a-z]/i.test(item)).length === 5;
 
-  const inputRef = useRef();
+  const focusRef = useRef();
   //useEffect allows for side effects in components
   useEffect(() => {
-    inputRef.current.focus();
+    focusRef.current.focus();
   }, [gameOver])
 
   useEffect(() => {
@@ -104,7 +104,6 @@ function App() {
       <header>
         <h1>Welcome to My Wordle Game!</h1>
       </header>
-      <br />
       <div className="modal">
         <h2 className="message">{message}</h2>
         <input id="reset" type="button" value="Reset" onClick={resetGame} />
@@ -113,7 +112,7 @@ function App() {
         <form id="wordSpace">
           <h2>Remaining Attempts: {attempts}</h2>
           <div className="letter-row">
-            <LetterSpace letterState={letterState} position={1} sendDataToParent={handleDataFromLetterSpace(0)} disabled={gameOver} ref={inputRef} />
+            <LetterSpace letterState={letterState} position={1} sendDataToParent={handleDataFromLetterSpace(0)} disabled={gameOver} ref={focusRef} />
             <LetterSpace letterState={letterState} position={2} sendDataToParent={handleDataFromLetterSpace(1)} disabled={gameOver} />
             <LetterSpace letterState={letterState} position={3} sendDataToParent={handleDataFromLetterSpace(2)} disabled={gameOver} />
             <LetterSpace letterState={letterState} position={4} sendDataToParent={handleDataFromLetterSpace(3)} disabled={gameOver} />
