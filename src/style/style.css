@@ -74,13 +74,12 @@ form, aside {
   background-color: #0838e7;
   border: 5px solid #fde61b;
   border-radius: 15px;
-  display: block;
+  display: table;
   padding: 30px;
   position: fixed;
   left: 15px;
   right: 15px;
   animation: zoom-in 0.5s forwards;
-  min-height: 130px;
   margin: auto;
   max-width: 400px;
   transform: translateY(-50%);
