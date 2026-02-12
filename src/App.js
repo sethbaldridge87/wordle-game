@@ -5,6 +5,7 @@ import { useRef } from 'react';
 import { useEffect } from 'react';
 
 function App() {
+  const [secretWord, setSecretWord] = useState([]);
   const [myWord, createWord] = useState([]);
   const [attempts, setAttempts] = useState(6);
   const [message, updateMessage] = useState('');
@@ -12,14 +13,13 @@ function App() {
   const [letterState, updateLetterState] = useState(false);
   const guessedWordsContainer = document.querySelector('#guessed-words');
   const letterInputs = document.querySelectorAll('.letter-row input');
-  const secretWord = 'apple'.split('');
   const mainBody = document.querySelector('body');
 
   const endGame = () => {
     if (myWord.toString() === secretWord.toString()) {
       updateMessage("You Win!");
     } else {
-      updateMessage("You Lose!");
+      updateMessage("You Lose! The correct answer was '" + secretWord.join('') + "'");
     }
     mainBody.classList.add('modal-reveal');
     letterInputs.disabled = true;
@@ -71,6 +71,12 @@ function App() {
     updateLetterState(true);
   }
 
+  const getRandomWord = async () => {
+    const res = await fetch("https://random-word-api.herokuapp.com/word?length=5")
+    let data = await res.json();
+    setSecretWord(data[0].split(''));
+  }
+
   const resetGame = () => {
     resetLetters();
     createWord([]);
@@ -79,6 +85,7 @@ function App() {
     updateGame(false);
     updateMessage('');
     mainBody.classList.remove('modal-reveal');
+    getRandomWord();
   }
 
   const validWord = myWord.filter(item => typeof item === 'string' && /[a-z]/i.test(item)).length === 5;
@@ -96,13 +103,16 @@ function App() {
   }, [validWord]);
 
   useEffect(() => {
+    // ensures that the state from the previously guessed word does not linger
     updateLetterState(true);
-  }, [])
+    getRandomWord();
+  }, []);
   
   return (
     <>
       <header>
         <h1>Welcome to My Wordle Game!</h1>
+        {/* <h2>Todays random word is: {secretWord}</h2> */}
       </header>
       <div className="modal">
         <h2 className="message">{message}</h2>
