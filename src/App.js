@@ -29,19 +29,38 @@ function App() {
 
   const submitWord = () => {
     const section = document.createElement('section');
+    // creates a copy of the secretWord array so the original is unaffected
+    // Iterates through this copy and takes out letters during the loop
+    const available = [...secretWord];
+    const states = [];
+
+    // First pass: identify exact matches
     myWord.forEach((letter, i) => {
-      //need to compare secretWord to myWord
+      if (letter === secretWord[i]) {
+        states[i] = 'match';
+        available[i] = null;
+      }
+    });
+
+    // Second pass: identify present letters (not yet claimed)
+    myWord.forEach((letter, i) => {
+      if (!states[i] && available.includes(letter)) {
+        states[i] = 'present';
+        available[available.indexOf(letter)] = null;
+      }
+    });
+
+    // Create DOM elements with classes
+    myWord.forEach((letter, i) => {
       const letterDiv = document.createElement('div');
       letterDiv.classList.add('word-block');
-      if (secretWord.includes(letter)) {
-        letterDiv.classList.add('present');
-        if (myWord[i] === secretWord[i]) {
-          letterDiv.classList.add('match');
-        }
+      if (states[i]) {
+        letterDiv.classList.add(states[i])
       }
       letterDiv.textContent = letter;
       section.appendChild(letterDiv);
     });
+
     guessedWordsContainer.appendChild(section);
     createWord([]);
     resetLetters();
@@ -112,7 +131,7 @@ function App() {
     <>
       <header>
         <h1>Welcome to My Wordle Game!</h1>
-        {/* <h2>Todays random word is: {secretWord}</h2> */}
+        {/* <h2>Today's random word is: {secretWord}</h2> */}
       </header>
       <div className="modal">
         <h2 className="message">{message}</h2>
