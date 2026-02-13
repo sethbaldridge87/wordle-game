@@ -19,7 +19,9 @@ function App() {
     if (myWord.toString() === secretWord.toString()) {
       updateMessage("You Win!");
     } else {
-      updateMessage("You Lose! The correct answer was '" + secretWord.join('') + "'");
+      let capitalizedWord = secretWord.join('');
+      capitalizedWord = capitalizedWord.charAt(0).toUpperCase() + capitalizedWord.slice(1);
+      updateMessage("You Lose! The correct answer was '" + capitalizedWord + "'");
     }
     mainBody.classList.add('modal-reveal');
     letterInputs.disabled = true;
