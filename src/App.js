@@ -145,8 +145,8 @@ function App() {
           setValidWord(false);
         } finally {
           setLoading(false);
+          setwordData(true);
         }
-        setwordData(true);
       };
       fetchData();
     }
