@@ -141,7 +141,15 @@ form, aside {
     }
 
     #submit {
-      margin-top: 20px;
+      margin-top: 0;
+    }
+
+    p {
+      opacity: 0;
+    }
+
+    .loading {
+      opacity: 1;
     }
 }
 
@@ -182,7 +190,6 @@ input[type=button] {
   opacity: 0;
   padding: 10px 20px;
   pointer-events: none;
-  transition: .3s;
   -webkit-text-stroke: none;
   -webkit-text-stroke-width: 0;
 

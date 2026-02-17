@@ -11,6 +11,9 @@ function App() {
   const [message, updateMessage] = useState('');
   const [gameOver, updateGame] = useState(false);
   const [letterState, updateLetterState] = useState(false);
+  const [validWord, setValidWord] = useState(false);
+  const [wordData, setwordData] = useState(false);
+  const [loading, setLoading] = useState(false);
   const guessedWordsContainer = document.querySelector('#guessed-words');
   const letterInputs = document.querySelectorAll('.letter-row input');
   const mainBody = document.querySelector('body');
@@ -57,15 +60,17 @@ function App() {
       const letterDiv = document.createElement('div');
       letterDiv.classList.add('word-block');
       if (states[i]) {
-        letterDiv.classList.add(states[i])
+        letterDiv.classList.add(states[i]);
       }
       letterDiv.textContent = letter;
       section.appendChild(letterDiv);
     });
 
+    setwordData(false);
     guessedWordsContainer.appendChild(section);
     createWord([]);
     resetLetters();
+    setValidWord(false);
     focusRef.current.focus();
     // 'current' is an object returned by useRef()
     setAttempts((prevCount) => prevCount - 1);
@@ -108,14 +113,44 @@ function App() {
     mainBody.classList.remove('modal-reveal');
     getRandomWord();
   }
-
-  const validWord = myWord.filter(item => typeof item === 'string' && /[a-z]/i.test(item)).length === 5;
+  
+  const validLength = myWord.filter(item => typeof item === 'string' && /[a-z]/i.test(item)).length === 5;
 
   const focusRef = useRef();
-  //useEffect allows for side effects in components
+
+  //useEffect allows for side effects in components. Some examples of side effects are: fetching data, directly updating the DOM, and timers.
   useEffect(() => {
     focusRef.current.focus();
-  }, [gameOver])
+  }, [gameOver]);
+
+  useEffect(() => {
+    if (validLength) {
+      const wordString = myWord.join('');
+      const fetchData = async () => {
+        let timer = setTimeout(() => {
+          setLoading(true);
+        }, 500);
+        try {
+          const response = await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/' + wordString);
+          clearTimeout(timer);
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: $(response.status}`);
+          }
+          const result = await response.json();
+          if (result[0].word === wordString) {
+            setValidWord(true);
+          }
+        } catch (error) {
+          clearTimeout(timer);
+          setValidWord(false);
+        } finally {
+          setLoading(false);
+        }
+        setwordData(true);
+      };
+      fetchData();
+    }
+  }, [validLength, myWord]);
 
   useEffect(() => {
     if (validWord) {
@@ -149,7 +184,8 @@ function App() {
             <LetterSpace letterState={letterState} position={4} sendDataToParent={handleDataFromLetterSpace(3)} disabled={gameOver} />
             <LetterSpace letterState={letterState} position={5} sendDataToParent={handleDataFromLetterSpace(4)} disabled={gameOver} />
           </div>
-          <input id="submit" type="button" value="Submit" className={validWord ? 'show' : ''} onClick={submitWord} />
+          <p className={loading ? 'loading': ''}>Loading...</p>
+          <input id="submit" type="button" value={validWord ? 'Submit' : 'Not a Word'} className={wordData ? 'show' : ''} onClick={submitWord} disabled={!validWord} />
         </form>
         <aside>
           <h2>Guessed Words:</h2>
