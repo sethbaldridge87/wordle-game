@@ -14,9 +14,11 @@ function App() {
   const [validWord, setValidWord] = useState(false);
   const [wordData, setwordData] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [gameReady, setGameReady] = useState(false);
   const guessedWordsContainer = document.querySelector('#guessed-words');
   const letterInputs = document.querySelectorAll('.letter-row input');
   const mainBody = document.querySelector('body');
+  const backupWords = ['apple','would','great','chain','stink','jewel','shard','mixed','wring','eagle'];
 
   const endGame = () => {
     if (myWord.toString() === secretWord.toString()) {
@@ -98,9 +100,19 @@ function App() {
   }
 
   const getRandomWord = async () => {
-    const res = await fetch("https://random-word-api.herokuapp.com/word?length=5");
-    let data = await res.json();
-    setSecretWord(data[0].split(''));
+    try {
+      const res = await fetch("https://random-word-api.herokuapp.com/word?length=5");
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: $(response.status}`);
+      }
+      let data = await res.json();
+      setSecretWord(data[0].split(''));
+    } catch (error) {
+      const randomIndex = Math.floor(Math.random() * backupWords.length);
+      setSecretWord(backupWords[randomIndex].split(''));
+    } finally {
+      setGameReady(true);
+    }
   }
 
   const resetGame = () => {
@@ -111,6 +123,7 @@ function App() {
     updateGame(false);
     updateMessage('');
     mainBody.classList.remove('modal-reveal');
+    setGameReady(false);
     getRandomWord();
   }
   
@@ -173,7 +186,8 @@ function App() {
         <h2 className="message">{message}</h2>
         <input id="reset" type="button" value="Reset" onClick={resetGame} />
       </div>
-      <main>
+      <h2 className={`load-message ${gameReady ? 'loaded' : ''}`}>Loading...</h2>
+      <main className={gameReady ? 'game-ready': ''}>
         <form id="wordSpace">
           <h2>Remaining Attempts: {attempts}</h2>
           <div className="letter-row">

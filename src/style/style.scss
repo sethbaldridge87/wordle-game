@@ -34,14 +34,27 @@ header {
 }
 
 main {
+  pointer-events: none;
+  opacity: 0;
   justify-items: center;
   margin-left: auto;
   margin-right: auto;
+
+  &.game-ready {
+    pointer-events: all;
+    opacity: 1;
+  }
 }
 
 h2 {
   margin: 0;
   padding: 0;
+}
+
+.load-message {
+  &.loaded {
+    display: none;
+  }
 }
 
 form, aside {
