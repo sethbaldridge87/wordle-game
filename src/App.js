@@ -185,7 +185,7 @@ function App() {
             <LetterSpace letterState={letterState} position={5} sendDataToParent={handleDataFromLetterSpace(4)} disabled={gameOver} />
           </div>
           <p className={loading ? 'loading': ''}>Loading...</p>
-          <input id="submit" type="button" value={validWord ? 'Submit' : 'Not a Word'} className={wordData ? 'show' : ''} onClick={submitWord} disabled={!validWord} />
+          <input id="submit" type="button" value={validWord ? 'Submit' : 'Not a Word'} className={wordData && validLength ? 'show' : ''} onClick={submitWord} disabled={!validWord} />
         </form>
         <aside>
           <h2>Guessed Words:</h2>
