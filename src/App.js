@@ -98,7 +98,7 @@ function App() {
   }
 
   const getRandomWord = async () => {
-    const res = await fetch("https://random-word-api.herokuapp.com/word?length=5")
+    const res = await fetch("https://random-word-api.herokuapp.com/word?length=5");
     let data = await res.json();
     setSecretWord(data[0].split(''));
   }
@@ -132,7 +132,6 @@ function App() {
         }, 500);
         try {
           const response = await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/' + wordString);
-          clearTimeout(timer);
           if (!response.ok) {
             throw new Error(`HTTP error! status: $(response.status}`);
           }
@@ -141,9 +140,9 @@ function App() {
             setValidWord(true);
           }
         } catch (error) {
-          clearTimeout(timer);
           setValidWord(false);
         } finally {
+          clearTimeout(timer);
           setLoading(false);
           setwordData(true);
         }
