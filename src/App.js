@@ -1,8 +1,6 @@
 import './style/style.css';
 import LetterSpace from './components/LetterSpace';
-import { useState } from 'react';
-import { useRef } from 'react';
-import { useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 
 function App() {
   const [secretWord, setSecretWord] = useState([]);
@@ -18,7 +16,6 @@ function App() {
   const guessedWordsContainer = document.querySelector('#guessed-words');
   const letterInputs = document.querySelectorAll('.letter-row input');
   const mainBody = document.querySelector('body');
-  const backupWords = ['apple','would','great','chain','stink','jewel','shard','mixed','wring','eagle'];
 
   const endGame = () => {
     if (myWord.toString() === secretWord.toString()) {
@@ -99,7 +96,7 @@ function App() {
     updateLetterState(true);
   }
 
-  const getRandomWord = async () => {
+  const getRandomWord = useCallback(async () => {
     try {
       const res = await fetch("https://random-word-api.herokuapp.com/word?length=5");
       if (!res.ok) {
@@ -108,12 +105,13 @@ function App() {
       let data = await res.json();
       setSecretWord(data[0].split(''));
     } catch (error) {
+      const backupWords = ['apple','would','great','chain','stink','jewel','shard','mixed','wring','eagle'];
       const randomIndex = Math.floor(Math.random() * backupWords.length);
       setSecretWord(backupWords[randomIndex].split(''));
     } finally {
       setGameReady(true);
     }
-  }
+  }, []);
 
   const resetGame = () => {
     resetLetters();
@@ -174,7 +172,7 @@ function App() {
     // ensures that the state from the previously guessed word does not linger
     updateLetterState(true);
     getRandomWord();
-  }, []);
+  }, [getRandomWord]);
   
   return (
     <>
