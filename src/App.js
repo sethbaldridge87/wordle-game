@@ -1,6 +1,6 @@
 import './style/style.css';
 import LetterSpace from './components/LetterSpace';
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 function App() {
   const [secretWord, setSecretWord] = useState([]);
@@ -13,6 +13,7 @@ function App() {
   const [wordData, setwordData] = useState(false);
   const [loading, setLoading] = useState(false);
   const [gameReady, setGameReady] = useState(false);
+  const [newWord, setNewWord] = useState(true);
   const guessedWordsContainer = document.querySelector('#guessed-words');
   const letterInputs = document.querySelectorAll('.letter-row input');
   const mainBody = document.querySelector('body');
@@ -85,7 +86,7 @@ function App() {
   }
 
   const handleDataFromLetterSpace = (index) => (data) => {
-    //example of a curried function
+    // example of a curried function
     updateWord(index, data);
   }
 
@@ -96,23 +97,6 @@ function App() {
     updateLetterState(true);
   }
 
-  const getRandomWord = useCallback(async () => {
-    try {
-      const res = await fetch("https://random-word-api.herokuapp.com/word?length=5");
-      if (!res.ok) {
-        throw new Error(`HTTP error! status: $(response.status}`);
-      }
-      let data = await res.json();
-      setSecretWord(data[0].split(''));
-    } catch (error) {
-      const backupWords = ['apple','would','great','chain','stink','jewel','shard','mixed','wring','eagle'];
-      const randomIndex = Math.floor(Math.random() * backupWords.length);
-      setSecretWord(backupWords[randomIndex].split(''));
-    } finally {
-      setGameReady(true);
-    }
-  }, []);
-
   const resetGame = () => {
     resetLetters();
     createWord([]);
@@ -122,18 +106,19 @@ function App() {
     updateMessage('');
     mainBody.classList.remove('modal-reveal');
     setGameReady(false);
-    getRandomWord();
+    setNewWord(true);
   }
   
   const validLength = myWord.filter(item => typeof item === 'string' && /[a-z]/i.test(item)).length === 5;
 
   const focusRef = useRef();
 
-  //useEffect allows for side effects in components. Some examples of side effects are: fetching data, directly updating the DOM, and timers.
+  // useEffect allows for side effects in components. Some examples of side effects are: fetching data, directly updating the DOM, and timers.
+  // Focuses the cursor on the first letter when the game resets
   useEffect(() => {
     focusRef.current.focus();
   }, [gameOver]);
-
+  // Checks if the word input is valid
   useEffect(() => {
     if (validLength) {
       const wordString = myWord.join('');
@@ -161,18 +146,35 @@ function App() {
       fetchData();
     }
   }, [validLength, myWord]);
-
+  // Focuses the cursor on the submit button if the word is valid
   useEffect(() => {
     if (validWord) {
       document.querySelector('#submit').focus();
     }
   }, [validWord]);
-
+  // Gets a new random secret word
   useEffect(() => {
+    const fetchWord = async () => {
+      try {
+        const res = await fetch("https://random-word-api.herokuapp.com/word?length=5");
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: $(response.status}`);
+        }
+        let data = await res.json();
+        setSecretWord(data[0].split(''));
+      } catch (error) {
+        const backupWords = ['apple','would','great','chain','stink','jewel','shard','mixed','wring','eagle'];
+        const randomIndex = Math.floor(Math.random() * backupWords.length);
+        setSecretWord(backupWords[randomIndex].split(''));
+      } finally {
+        setGameReady(true);
+      }
+    }
+    fetchWord();
+    setNewWord(false);
     // ensures that the state from the previously guessed word does not linger
     updateLetterState(true);
-    getRandomWord();
-  }, [getRandomWord]);
+  }, [newWord]);
   
   return (
     <>
