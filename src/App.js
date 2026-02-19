@@ -156,7 +156,7 @@ function App() {
   useEffect(() => {
     const fetchWord = async () => {
       try {
-        const res = await fetch("https://random-word-api.herokuapp.com/word?length=5");
+        const res = await fetch("https://random-word-api.herokuapp.com/word?length=5&diff=2");
         if (!res.ok) {
           throw new Error(`HTTP error! status: $(response.status}`);
         }

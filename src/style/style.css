@@ -212,6 +212,7 @@ input[type=button].show:hover, input[type=button].show:focus, input[type=button]
     flex: 0 0 50%;
     height: -moz-fit-content;
     height: fit-content;
+    min-height: 325px;
     width: 50%;
     margin: 15px;
   }

@@ -232,6 +232,7 @@ input[type=button] {
   form, aside {
     flex: 0 0 50%;
     height: fit-content;
+    min-height: 325px;
     width: 50%;
     margin: 15px;
   }
