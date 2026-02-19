@@ -19,7 +19,7 @@ body {
   letter-spacing: 2px;
   width: 100vw;
   margin: 0;
-  padding: 0;
+  padding: 5px;
   overflow-x: hidden;
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
@@ -33,7 +33,7 @@ header {
   padding: 15px;
 }
 
-main {
+main, #keyboard {
   pointer-events: none;
   opacity: 0;
   justify-items: center;
@@ -46,12 +46,31 @@ main {
   }
 }
 
+#keyboard {
+  pointer-events: all;
+  opacity: 1;
+
+  .keyboard-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
 h2 {
   margin: 0;
   padding: 0;
 }
 
 .load-message {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, .5);
+  align-content: center;
+
   &.loaded {
     display: none;
   }
@@ -166,7 +185,7 @@ form, aside {
     }
 }
 
-#guessed-words {
+#guessed-words, #keyboard {
   section {
     display: flex;
     font-size: 35px;
@@ -178,8 +197,12 @@ form, aside {
     }
   }
 
-  div {
+  .word-block {
     width: 55px;
+
+    &.missing {
+      background-color: rgb(100, 100, 100);
+    }
 
     &.present {
       background-color: rgb(255, 255, 143);
@@ -232,14 +255,20 @@ input[type=button] {
   form, aside {
     flex: 0 0 50%;
     height: fit-content;
-    min-height: 325px;
+    min-height: 450px;
     width: 50%;
     margin: 15px;
+  }
+
+  #keyboard {
+    display: block;
+    justify-content: center;
+    max-width: 800px;
   }
 }
 
 @media screen and (min-width: 1200px) {
-  main {
+  main, #keyboard {
     max-width: 1050px;
   }
 }

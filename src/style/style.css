@@ -15,7 +15,7 @@ body {
   letter-spacing: 2px;
   width: 100vw;
   margin: 0;
-  padding: 0;
+  padding: 5px;
   overflow-x: hidden;
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
@@ -29,16 +29,26 @@ header {
   padding: 15px;
 }
 
-main {
+main, #keyboard {
   pointer-events: none;
   opacity: 0;
   justify-items: center;
   margin-left: auto;
   margin-right: auto;
 }
-main.game-ready {
+main.game-ready, #keyboard.game-ready {
   pointer-events: all;
   opacity: 1;
+}
+
+#keyboard {
+  pointer-events: all;
+  opacity: 1;
+}
+#keyboard .keyboard-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 h2 {
@@ -46,6 +56,15 @@ h2 {
   padding: 0;
 }
 
+.load-message {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  align-content: center;
+}
 .load-message.loaded {
   display: none;
 }
@@ -152,22 +171,25 @@ form, aside {
   opacity: 1;
 }
 
-#guessed-words section {
+#guessed-words section, #keyboard section {
   display: flex;
   font-size: 35px;
   justify-content: center;
   text-transform: capitalize;
 }
-#guessed-words section:first-of-type {
+#guessed-words section:first-of-type, #keyboard section:first-of-type {
   margin-top: 15px;
 }
-#guessed-words div {
+#guessed-words .word-block, #keyboard .word-block {
   width: 55px;
 }
-#guessed-words div.present {
+#guessed-words .word-block.missing, #keyboard .word-block.missing {
+  background-color: rgb(100, 100, 100);
+}
+#guessed-words .word-block.present, #keyboard .word-block.present {
   background-color: rgb(255, 255, 143);
 }
-#guessed-words div.match {
+#guessed-words .word-block.match, #keyboard .word-block.match {
   background-color: rgb(159, 244, 159);
 }
 
@@ -212,13 +234,18 @@ input[type=button].show:hover, input[type=button].show:focus, input[type=button]
     flex: 0 0 50%;
     height: -moz-fit-content;
     height: fit-content;
-    min-height: 325px;
+    min-height: 450px;
     width: 50%;
     margin: 15px;
   }
+  #keyboard {
+    display: block;
+    justify-content: center;
+    max-width: 800px;
+  }
 }
 @media screen and (min-width: 1200px) {
-  main {
+  main, #keyboard {
     max-width: 1050px;
   }
 }

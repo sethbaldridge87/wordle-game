@@ -1,5 +1,6 @@
 import './style/style.css';
 import LetterSpace from './components/LetterSpace';
+import LetterKey from './components/LetterKey';
 import { useState, useRef, useEffect } from 'react';
 
 function App() {
@@ -17,6 +18,12 @@ function App() {
   const guessedWordsContainer = document.querySelector('#guessed-words');
   const letterInputs = document.querySelectorAll('.letter-row input');
   const mainBody = document.querySelector('body');
+  const keyboard = document.querySelector('#keyboard');
+  const qwerty = [
+    ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
+    ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'],
+    ['z', 'x', 'c', 'v', 'b', 'n', 'm']
+  ];
 
   const endGame = () => {
     if (myWord.toString() === secretWord.toString()) {
@@ -39,19 +46,29 @@ function App() {
     const available = [...secretWord];
     const states = [];
 
+    const keyboardCheck = (character, keyClass) => {
+      const matchedKey = keyboard.querySelector('[data-character="' + character + '"]');
+      matchedKey.classList.add(keyClass);
+    }
+
     // First pass: identify exact matches
     myWord.forEach((letter, i) => {
       if (letter === secretWord[i]) {
         states[i] = 'match';
         available[i] = null;
+        keyboardCheck(letter, 'match');
+      } else {
+        keyboardCheck(letter, 'missing');
       }
     });
+
 
     // Second pass: identify present letters (not yet claimed)
     myWord.forEach((letter, i) => {
       if (!states[i] && available.includes(letter)) {
         states[i] = 'present';
         available[available.indexOf(letter)] = null;
+        keyboardCheck(letter, 'present');
       }
     });
 
@@ -105,6 +122,10 @@ function App() {
     updateGame(false);
     updateMessage('');
     mainBody.classList.remove('modal-reveal');
+    const allKeys = keyboard.querySelectorAll('[data-character]');
+    allKeys.forEach((key) => {
+      key.classList.remove('match','present','missing');
+    });
     setGameReady(false);
     setNewWord(true);
   }
@@ -205,6 +226,17 @@ function App() {
           <div id="guessed-words"></div>
         </aside>
       </main>
+      <section id="keyboard">
+        {qwerty.map((row, i) => (
+          <div key={i} className="keyboard-row">
+            {row.map((key) => (
+              <LetterKey key={key}>
+                {key}
+              </LetterKey>
+            ))}
+          </div>
+        ))}
+      </section>
     </>
   );
 }
