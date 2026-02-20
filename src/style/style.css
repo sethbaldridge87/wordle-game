@@ -57,6 +57,7 @@ h2 {
 }
 
 .load-message {
+  display: none;
   position: absolute;
   left: 0;
   right: 0;
@@ -65,8 +66,20 @@ h2 {
   background: rgba(0, 0, 0, 0.5);
   align-content: center;
 }
-.load-message.loaded {
-  display: none;
+.load-message.loading {
+  display: block;
+}
+.load-message.loading span:nth-of-type(1) {
+  animation: loadAnimation 1.5s infinite 0.25s;
+  display: inline-block;
+}
+.load-message.loading span:nth-of-type(2) {
+  animation: loadAnimation 1.5s infinite 0.35s;
+  display: inline-block;
+}
+.load-message.loading span:nth-of-type(3) {
+  animation: loadAnimation 1.5s infinite 0.45s;
+  display: inline-block;
 }
 
 form, aside {
@@ -169,6 +182,18 @@ form, aside {
 }
 #wordSpace .loading {
   opacity: 1;
+}
+#wordSpace .loading span:nth-of-type(1) {
+  animation: loadAnimation 1.5s infinite 0.25s;
+  display: inline-block;
+}
+#wordSpace .loading span:nth-of-type(2) {
+  animation: loadAnimation 1.5s infinite 0.35s;
+  display: inline-block;
+}
+#wordSpace .loading span:nth-of-type(3) {
+  animation: loadAnimation 1.5s infinite 0.45s;
+  display: inline-block;
 }
 
 #guessed-words section, #keyboard section {
@@ -290,5 +315,16 @@ input[type=button].show:hover, input[type=button].show:focus, input[type=button]
   }
   100% {
     transform: scale(1, 1);
+  }
+}
+@keyframes loadAnimation {
+  0% {
+    transform: translate(0, 0);
+  }
+  15% {
+    transform: translate(0, -5px);
+  }
+  80% {
+    transform: translate(0, 0);
   }
 }/*# sourceMappingURL=style.css.map */

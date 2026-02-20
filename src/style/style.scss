@@ -2,6 +2,17 @@ $gold: #fde61b;
 $dark-blue: #0838e7;
 $light-blue: #6b75d8;
 
+@use "sass:list";
+@mixin loadElement {
+  $delays: (.25s, .35s, .45s);
+  @for $i from 1 through list.length($delays) {
+    span:nth-of-type(#{$i}) {
+        animation: loadAnimation 1.5s infinite list.nth($delays, $i);
+        display: inline-block;
+    }
+  }
+}
+
 html, body {
   background: linear-gradient($dark-blue, $light-blue);
   background-repeat: no-repeat;
@@ -63,6 +74,7 @@ h2 {
 }
 
 .load-message {
+  display: none;
   position: absolute;
   left: 0;
   right: 0;
@@ -71,8 +83,9 @@ h2 {
   background: rgba(0, 0, 0, .5);
   align-content: center;
 
-  &.loaded {
-    display: none;
+  &.loading {
+    display: block;
+    @include loadElement;
   }
 }
 
@@ -182,6 +195,7 @@ form, aside {
 
     .loading {
       opacity: 1;
+      @include loadElement;
     }
 }
 
@@ -294,4 +308,10 @@ input[type=button] {
   100% {
     transform: scale(1, 1);
   }
+}
+
+@keyframes loadAnimation {
+  0% {transform: translate(0, 0);}
+  15% {transform: translate(0, -5px);}
+  80% {transform: translate(0, 0);}
 }

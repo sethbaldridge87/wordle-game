@@ -12,7 +12,7 @@ function App() {
   const [letterState, updateLetterState] = useState(false);
   const [validWord, setValidWord] = useState(false);
   const [wordData, setwordData] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [verifying, setVerifying] = useState(false);
   const [gameReady, setGameReady] = useState(false);
   const [newWord, setNewWord] = useState(true);
   const guessedWordsContainer = document.querySelector('#guessed-words');
@@ -145,7 +145,7 @@ function App() {
       const wordString = myWord.join('');
       const fetchData = async () => {
         let timer = setTimeout(() => {
-          setLoading(true);
+          setVerifying(true);
         }, 500);
         try {
           const response = await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/' + wordString);
@@ -160,7 +160,7 @@ function App() {
           setValidWord(false);
         } finally {
           clearTimeout(timer);
-          setLoading(false);
+          setVerifying(false);
           setwordData(true);
         }
       };
@@ -207,7 +207,7 @@ function App() {
         <h2 className="message">{message}</h2>
         <input id="reset" type="button" value="Reset" onClick={resetGame} />
       </div>
-      <h2 className={`load-message ${gameReady ? 'loaded' : ''}`}>Loading...</h2>
+      <h2 className={`load-message ${gameReady ? '' : 'loading'}`}>Loading<span>.</span><span>.</span><span>.</span></h2>
       <main className={gameReady ? 'game-ready': ''}>
         <form id="wordSpace">
           <h2>Remaining Attempts: {attempts}</h2>
@@ -218,7 +218,7 @@ function App() {
             <LetterSpace letterState={letterState} position={4} sendDataToParent={handleDataFromLetterSpace(3)} disabled={gameOver} />
             <LetterSpace letterState={letterState} position={5} sendDataToParent={handleDataFromLetterSpace(4)} disabled={gameOver} />
           </div>
-          <p className={loading ? 'loading': ''}>Loading...</p>
+          <p className={verifying ? 'loading': ''}>Loading<span>.</span><span>.</span><span>.</span></p>
           <input id="submit" type="button" value={validWord ? 'Submit' : 'Not a Word'} className={wordData && validLength ? 'show' : ''} onClick={submitWord} disabled={!validWord} />
         </form>
         <aside>
