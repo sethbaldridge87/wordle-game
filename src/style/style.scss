@@ -287,8 +287,39 @@ input[type=button] {
   }
 }
 
-@media screen and (min-width: 767px) {
+@media screen and (min-width: 576px) {
+  #layout, #keyboard {
+    width: 450px;
+  }
+
+  #guessed-words {
+    height: 375px;
+  }
+
+  .word-block {
+    height: 40px;
+    width: 40px;
+  }
+
   #layout {
+    .word-block {
+      font-size: 30px;
+    }
+  }
+
+  #keyboard {
+    .word-block {
+      font-size: 25px;
+    }
+
+    #backSpace {
+      font-size: 20px;
+    }
+  }
+}
+
+@media screen and (min-width: 767px) {
+  #layout, #keyboard {
     width: 650px;
   }
 
@@ -296,17 +327,24 @@ input[type=button] {
     height: 500px;
   }
 
-  #keyboard {
-    width: 640px;
-  }
-
   .word-block {
-    font-size: 40px;
     height: 60px;
     width: 60px;
+  }
 
-    &#backSpace {
-      font-size: 30px;
+  #layout {
+    .word-block {
+      font-size: 45px;
+    }
+  }
+
+  #keyboard {
+    .word-block {
+      font-size: 35px;
+    }
+
+    #backSpace {
+      font-size: 20px;
     }
   }
 }
@@ -315,7 +353,7 @@ input[type=button] {
   header {
     display: block;
   }
-  
+
   #layout {
     display: flex;
     justify-content: center;
@@ -328,10 +366,6 @@ input[type=button] {
     min-height: 500px;
     width: 50%;
     margin: 0 15px 15px;
-
-    .word-block {
-      font-size: 45px;
-    }
   }
 
   #wordSpace {
