@@ -26,32 +26,41 @@ body {
 }
 
 header {
+  display: none;
+  margin: 0;
   padding: 15px;
 }
 
-main, #keyboard {
+h1 {
+  margin: 0;
+}
+
+.modal-overlay {
+  display: none;
+}
+
+.modal {
+  display: none;
+}
+
+main {
   pointer-events: none;
   opacity: 0;
   justify-items: center;
   margin-left: auto;
   margin-right: auto;
 }
-main.game-ready, #keyboard.game-ready {
+main.game-ready {
   pointer-events: all;
   opacity: 1;
 }
 
-#keyboard {
-  pointer-events: all;
-  opacity: 1;
-}
-#keyboard .keyboard-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+#layout {
+  width: 95%;
 }
 
 h2 {
+  font-size: 25px;
   margin: 0;
   padding: 0;
 }
@@ -82,22 +91,42 @@ h2 {
   display: inline-block;
 }
 
-form, aside {
+#wordSpace, #guessed-words {
   background-color: rgb(165, 73, 42);
   border-radius: 15px;
   border-style: inset;
   box-shadow: inset 0 0 20px rgb(232, 194, 144), inset 0 0 20px rgb(232, 194, 144), inset 0 0 20px rgb(232, 194, 144), inset 0 0 20px rgb(232, 194, 144);
-  margin: 30px auto;
-  padding: 30px 15px;
-  width: 85%;
+  margin: 0 auto;
+  padding: 15px;
+}
+#wordSpace .word-block, #guessed-words .word-block {
+  font-size: 25px;
 }
 
-.modal-overlay {
-  display: none;
+#guessed-words {
+  height: 310px;
+  margin-top: 5px;
 }
 
-.modal {
-  display: none;
+#keyboard {
+  margin-top: 5px;
+}
+#keyboard .word-block {
+  cursor: pointer;
+  margin: 1px;
+}
+#keyboard .keyboard-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+#keyboard #backSpace {
+  padding: 0 5px;
+  width: auto;
+}
+
+#reset {
+  display: inline-block;
 }
 
 .modal-reveal .modal-overlay {
@@ -139,10 +168,11 @@ form, aside {
   border: 2px solid #000;
   color: #000;
   font-family: "Lexend", sans-serif;
-  font-size: 40px;
-  height: 50px;
+  font-size: 20px;
+  height: 30px;
   margin: 5px;
-  width: 50px;
+  padding: 0;
+  width: 30px;
   text-align: center;
   text-transform: capitalize;
   -webkit-text-stroke: none;
@@ -177,36 +207,14 @@ form, aside {
 #wordSpace #submit {
   margin-top: 0;
 }
-#wordSpace p {
-  opacity: 0;
-}
-#wordSpace .loading {
-  opacity: 1;
-}
-#wordSpace .loading span:nth-of-type(1) {
-  animation: loadAnimation 1.5s infinite 0.25s;
-  display: inline-block;
-}
-#wordSpace .loading span:nth-of-type(2) {
-  animation: loadAnimation 1.5s infinite 0.35s;
-  display: inline-block;
-}
-#wordSpace .loading span:nth-of-type(3) {
-  animation: loadAnimation 1.5s infinite 0.45s;
-  display: inline-block;
-}
 
 #guessed-words section, #keyboard section {
   display: flex;
-  font-size: 35px;
   justify-content: center;
   text-transform: capitalize;
 }
 #guessed-words section:first-of-type, #keyboard section:first-of-type {
   margin-top: 15px;
-}
-#guessed-words .word-block, #keyboard .word-block {
-  width: 55px;
 }
 #guessed-words .word-block.missing, #keyboard .word-block.missing {
   background-color: rgb(100, 100, 100);
@@ -220,21 +228,20 @@ form, aside {
 
 input[type=button] {
   cursor: pointer;
-  display: inline-block;
+  display: none;
   background-color: #fde61b;
   border-radius: 12px;
   font-family: "Chewy", system-ui;
   font-size: 20px;
   letter-spacing: 0.5px;
   margin-top: 10px;
-  opacity: 0;
   padding: 10px 20px;
   pointer-events: none;
   -webkit-text-stroke: none;
   -webkit-text-stroke-width: 0;
 }
 input[type=button].show {
-  opacity: 1;
+  display: inline-block;
   pointer-events: auto;
 }
 input[type=button].show::-moz-selection {
@@ -244,24 +251,90 @@ input[type=button].show:hover, input[type=button].show:focus, input[type=button]
   box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.75);
 }
 
+#inputField {
+  height: 60px;
+}
+#inputField h6 {
+  display: none;
+  margin-top: 15px;
+}
+#inputField h6.loading {
+  display: block;
+}
+#inputField h6.loading span:nth-of-type(1) {
+  animation: loadAnimation 1.5s infinite 0.25s;
+  display: inline-block;
+}
+#inputField h6.loading span:nth-of-type(2) {
+  animation: loadAnimation 1.5s infinite 0.35s;
+  display: inline-block;
+}
+#inputField h6.loading span:nth-of-type(3) {
+  animation: loadAnimation 1.5s infinite 0.45s;
+  display: inline-block;
+}
+
+@media screen and (min-width: 576px) {
+  #layout, #keyboard {
+    width: 450px;
+  }
+  #guessed-words {
+    height: 375px;
+  }
+  .word-block {
+    height: 40px;
+    width: 40px;
+  }
+  #layout .word-block {
+    font-size: 30px;
+  }
+  #keyboard .word-block {
+    font-size: 25px;
+  }
+  #keyboard #backSpace {
+    font-size: 20px;
+  }
+}
 @media screen and (min-width: 767px) {
-  form, aside {
-    max-width: 650px;
+  #layout, #keyboard {
+    width: 650px;
+  }
+  #guessed-words {
+    height: 500px;
+  }
+  .word-block {
+    height: 60px;
+    width: 60px;
+  }
+  #layout .word-block {
+    font-size: 45px;
+  }
+  #keyboard .word-block {
+    font-size: 35px;
+  }
+  #keyboard #backSpace {
+    font-size: 20px;
   }
 }
 @media screen and (min-width: 992px) {
-  main {
+  header {
+    display: block;
+  }
+  #layout {
     display: flex;
     justify-content: center;
     max-width: 800px;
   }
-  form, aside {
+  #wordSpace, #guessed-words {
     flex: 0 0 50%;
     height: -moz-fit-content;
     height: fit-content;
-    min-height: 450px;
+    min-height: 500px;
     width: 50%;
-    margin: 15px;
+    margin: 0 15px 15px;
+  }
+  #wordSpace {
+    align-content: center;
   }
   #keyboard {
     display: block;
@@ -270,7 +343,7 @@ input[type=button].show:hover, input[type=button].show:focus, input[type=button]
   }
 }
 @media screen and (min-width: 1200px) {
-  main, #keyboard {
+  #layout, #keyboard {
     max-width: 1050px;
   }
 }
