@@ -184,26 +184,6 @@ h2 {
   justify-content: center;
   margin-top: 15px;
 }
-#wordSpace .letter-row input {
-  caret-color: transparent;
-  cursor: pointer;
-}
-#wordSpace .letter-row input::-moz-selection {
-  background: rgb(199, 219, 225);
-}
-#wordSpace .letter-row input:focus, #wordSpace .letter-row input::selection {
-  background: rgb(199, 219, 225);
-}
-#wordSpace .letter-row input.invalid {
-  background: rgb(212, 109, 109);
-  animation: shake 0.5s;
-}
-#wordSpace .letter-row input.invalid::-moz-selection {
-  background: rgb(212, 109, 109);
-}
-#wordSpace .letter-row input.invalid::selection {
-  background: rgb(212, 109, 109);
-}
 #wordSpace #submit {
   margin-top: 0;
 }
@@ -345,41 +325,6 @@ input[type=button].show:hover, input[type=button].show:focus, input[type=button]
 @media screen and (min-width: 1200px) {
   #layout, #keyboard {
     max-width: 1050px;
-  }
-}
-@keyframes shake {
-  0% {
-    transform: translate(1px, 1px) rotate(0deg);
-  }
-  10% {
-    transform: translate(-1px, -2px) rotate(-1deg);
-  }
-  20% {
-    transform: translate(-3px, 0px) rotate(1deg);
-  }
-  30% {
-    transform: translate(3px, 2px) rotate(0deg);
-  }
-  40% {
-    transform: translate(1px, -1px) rotate(1deg);
-  }
-  50% {
-    transform: translate(-1px, 2px) rotate(-1deg);
-  }
-  60% {
-    transform: translate(-3px, 1px) rotate(0deg);
-  }
-  70% {
-    transform: translate(3px, 1px) rotate(-1deg);
-  }
-  80% {
-    transform: translate(-1px, -1px) rotate(1deg);
-  }
-  90% {
-    transform: translate(1px, 2px) rotate(0deg);
-  }
-  100% {
-    transform: translate(1px, -2px) rotate(-1deg);
   }
 }
 @keyframes zoom-in {

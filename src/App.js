@@ -119,7 +119,6 @@ function App() {
   const handleLetterClick = (key) => {
     if (myWord.length < 5) {
       createWord([...myWord, key]);
-      console.log(myWord);
     }
   }
 
@@ -204,7 +203,7 @@ function App() {
       <main className={gameReady ? 'game-ready': ''}>
         <div id="layout">
           <section id="wordSpace">
-            <h2>Remaining Attempts: {attempts}</h2>
+            <h2>Attempts Left: {attempts}</h2>
             <div className="letter-row">
               <LetterDisplay letterState={myWord} position={0}></LetterDisplay>
               <LetterDisplay letterState={myWord} position={1}></LetterDisplay>

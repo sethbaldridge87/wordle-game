@@ -198,24 +198,6 @@ h2 {
       display: flex;
       justify-content: center;
       margin-top: 15px;
-
-      input {
-          caret-color: transparent;
-          cursor: pointer;
-
-          &:focus, &::selection {
-            background: rgb(199, 219, 225);
-          }
-
-          &.invalid {
-            background: rgb(212, 109, 109);
-            animation: shake 0.5s;
-            
-            &::selection {
-              background: rgb(212, 109, 109);
-            }
-          }
-      }
   }
 
   #submit {
@@ -383,20 +365,6 @@ input[type=button] {
   #layout, #keyboard {
     max-width: 1050px;
   }
-}
-
-@keyframes shake {
-  0% { transform: translate(1px, 1px) rotate(0deg); }
-  10% { transform: translate(-1px, -2px) rotate(-1deg); }
-  20% { transform: translate(-3px, 0px) rotate(1deg); }
-  30% { transform: translate(3px, 2px) rotate(0deg); }
-  40% { transform: translate(1px, -1px) rotate(1deg); }
-  50% { transform: translate(-1px, 2px) rotate(-1deg); }
-  60% { transform: translate(-3px, 1px) rotate(0deg); }
-  70% { transform: translate(3px, 1px) rotate(-1deg); }
-  80% { transform: translate(-1px, -1px) rotate(1deg); }
-  90% { transform: translate(1px, 2px) rotate(0deg); }
-  100% { transform: translate(1px, -2px) rotate(-1deg); }
 }
 
 @keyframes zoom-in {
