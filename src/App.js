@@ -1,7 +1,7 @@
 import './style/style.css';
-import LetterSpace from './components/LetterSpace';
 import LetterKey from './components/LetterKey';
-import { useState, useRef, useEffect } from 'react';
+import LetterDisplay from './components/LetterDisplay';
+import { useState, useEffect } from 'react';
 
 function App() {
   const [secretWord, setSecretWord] = useState([]);
@@ -9,13 +9,12 @@ function App() {
   const [attempts, setAttempts] = useState(6);
   const [message, updateMessage] = useState('');
   const [gameOver, updateGame] = useState(false);
-  const [letterState, updateLetterState] = useState(false);
   const [validWord, setValidWord] = useState(false);
   const [wordData, setwordData] = useState(false);
   const [verifying, setVerifying] = useState(false);
   const [gameReady, setGameReady] = useState(false);
   const [newWord, setNewWord] = useState(true);
-  const guessedWordsContainer = document.querySelector('#guessed-words');
+  const guessedWordsContainer = document.querySelector('#guessed-words div');
   const letterInputs = document.querySelectorAll('.letter-row input');
   const mainBody = document.querySelector('body');
   const keyboard = document.querySelector('#keyboard');
@@ -88,7 +87,6 @@ function App() {
     createWord([]);
     resetLetters();
     setValidWord(false);
-    focusRef.current.focus();
     // 'current' is an object returned by useRef()
     setAttempts((prevCount) => prevCount - 1);
     if (attempts === 1 || myWord.toString() === secretWord.toString()) {
@@ -96,22 +94,10 @@ function App() {
     }
   }
 
-  const updateWord = (position,letter) => {
-    let updatedWord = [...myWord];
-    updatedWord[position] = letter;
-    createWord(updatedWord);
-  }
-
-  const handleDataFromLetterSpace = (index) => (data) => {
-    // example of a curried function
-    updateWord(index, data);
-  }
-
   const resetLetters = () => {
     letterInputs.forEach(input => {
       input.value = '';
     });
-    updateLetterState(true);
   }
 
   const resetGame = () => {
@@ -129,15 +115,24 @@ function App() {
     setGameReady(false);
     setNewWord(true);
   }
+
+  const handleLetterClick = (key) => {
+    if (myWord.length < 5) {
+      createWord([...myWord, key]);
+      console.log(myWord);
+    }
+  }
+
+  const deleteLetter = () => {
+    createWord(myWord => myWord.slice(0, -1));
+  }
   
   const validLength = myWord.filter(item => typeof item === 'string' && /[a-z]/i.test(item)).length === 5;
-
-  const focusRef = useRef();
 
   // useEffect allows for side effects in components. Some examples of side effects are: fetching data, directly updating the DOM, and timers.
   // Focuses the cursor on the first letter when the game resets
   useEffect(() => {
-    focusRef.current.focus();
+    
   }, [gameOver]);
   // Checks if the word input is valid
   useEffect(() => {
@@ -193,8 +188,6 @@ function App() {
     }
     fetchWord();
     setNewWord(false);
-    // ensures that the state from the previously guessed word does not linger
-    updateLetterState(true);
   }, [newWord]);
   
   return (
@@ -209,34 +202,44 @@ function App() {
       </div>
       <h2 className={`load-message ${gameReady ? '' : 'loading'}`}>Loading<span>.</span><span>.</span><span>.</span></h2>
       <main className={gameReady ? 'game-ready': ''}>
-        <form id="wordSpace">
-          <h2>Remaining Attempts: {attempts}</h2>
-          <div className="letter-row">
-            <LetterSpace letterState={letterState} position={1} sendDataToParent={handleDataFromLetterSpace(0)} disabled={gameOver} ref={focusRef} />
-            <LetterSpace letterState={letterState} position={2} sendDataToParent={handleDataFromLetterSpace(1)} disabled={gameOver} />
-            <LetterSpace letterState={letterState} position={3} sendDataToParent={handleDataFromLetterSpace(2)} disabled={gameOver} />
-            <LetterSpace letterState={letterState} position={4} sendDataToParent={handleDataFromLetterSpace(3)} disabled={gameOver} />
-            <LetterSpace letterState={letterState} position={5} sendDataToParent={handleDataFromLetterSpace(4)} disabled={gameOver} />
-          </div>
-          <p className={verifying ? 'loading': ''}>Loading<span>.</span><span>.</span><span>.</span></p>
-          <input id="submit" type="button" value={validWord ? 'Submit' : 'Not a Word'} className={wordData && validLength ? 'show' : ''} onClick={submitWord} disabled={!validWord} />
-        </form>
-        <aside>
-          <h2>Guessed Words:</h2>
-          <div id="guessed-words"></div>
-        </aside>
-      </main>
-      <section id="keyboard">
+        <div id="layout">
+          <section id="wordSpace">
+            <h2>Remaining Attempts: {attempts}</h2>
+            <div className="letter-row">
+              <LetterDisplay letterState={myWord} position={0}></LetterDisplay>
+              <LetterDisplay letterState={myWord} position={1}></LetterDisplay>
+              <LetterDisplay letterState={myWord} position={2}></LetterDisplay>
+              <LetterDisplay letterState={myWord} position={3}></LetterDisplay>
+              <LetterDisplay letterState={myWord} position={4}></LetterDisplay>
+            </div>
+          </section>
+          <section id="guessed-words">
+            <h2>Guessed Words:</h2>
+            <div></div>
+          </section>
+        </div>
+        <section id="keyboard">
         {qwerty.map((row, i) => (
           <div key={i} className="keyboard-row">
             {row.map((key) => (
-              <LetterKey key={key}>
-                {key}
-              </LetterKey>
+              key !== "m" ? (
+                <LetterKey props={key} key={key} onChildClick={() => handleLetterClick(key)}>{key}</LetterKey>
+               ) : (
+                <>
+                  <LetterKey props={key} key={key} onChildClick={() => handleLetterClick(key)}>{key}</LetterKey>
+                  {/* onClick function must be written this way so that the function doesn't automatically trigger when the component is rendered. */}
+                  <button onClick={() => deleteLetter()} class="word-block" id="backSpace">BKSP</button>
+                </>
+               )
             ))}
           </div>
         ))}
+        <div id="inputField">
+          <input id="submit" type="button" value={validWord ? 'Submit' : 'Not a Word'} className={wordData && validLength ? 'show' : ''} onClick={submitWord} disabled={!validWord} />
+          <h6 className={verifying ? 'loading': ''}>Loading<span>.</span><span>.</span><span>.</span></h6>
+        </div>
       </section>
+      </main>
     </>
   );
 }
